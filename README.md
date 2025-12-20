@@ -8,6 +8,7 @@ Personal dotfiles collected from the current machine. Files are now at repo root
 - `aerospace.toml` (links to `~/.config/aerospace/aerospace.toml`)
 - `.wezterm.lua`
 - `.vscode/settings.json` (links to VS Code user settings: macOS `~/Library/Application Support/Code/User/settings.json`, Linux `~/.config/Code/User/settings.json`)
+- `.gitconfig` (sets git user.name/user.email)
 
 ## Usage
 1. Back up any existing config files on the target machine.

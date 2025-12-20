@@ -1,0 +1,6 @@
+[user]
+  name = codyzard
+  email = mrahn1234@gmail.com
+[push]
+  default = current
+  autoSetupRemote = true

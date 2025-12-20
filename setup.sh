@@ -166,6 +166,7 @@ link_or_copy() {
 }
 
 TARGETS=(
+  ".gitconfig|$HOME/.gitconfig"
   ".zshrc|$HOME/.zshrc"
   "my_custom.zsh|$HOME/.oh-my-zsh/custom/my_custom.zsh"
   "aerospace.toml|$HOME/.config/aerospace/aerospace.toml"

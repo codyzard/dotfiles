@@ -37,6 +37,7 @@ alias dce="docker compose exec "
 alias cc=claude
 alias cx=codex
 alias cg=gemini
+alias kr=kiro-cli
 
 
 ### ANY

@@ -3,6 +3,7 @@ set -euo pipefail
 
 MODE="symlink"
 CHECK_ONLY=false
+INSTALL_MISSING=false
 UNAME_S=$(uname -s 2>/dev/null || echo "unknown")
 
 # VS Code settings destination depends on platform
@@ -19,13 +20,17 @@ while [[ $# -gt 0 ]]; do
     --check)
       CHECK_ONLY=true
       ;;
+    --install-missing)
+      INSTALL_MISSING=true
+      ;;
     --help)
       cat <<'EOF'
-Usage: ./setup.sh [--copy] [--check]
+Usage: ./setup.sh [--copy] [--check] [--install-missing]
 
 By default, creates symlinks from this repo to $HOME.
 Use --copy to copy files instead of symlinking.
 Use --check to run recommended environment checks without linking/copying.
+Use --install-missing to attempt installing optional CLIs when absent.
 Existing files are backed up with a timestamped .bak suffix.
 EOF
       exit 0
@@ -64,6 +69,37 @@ check_cmd() {
     status_line "OK" "$label" "$(command -v "$cmd")"
   else
     status_line "MISS" "$label" "not found"
+  fi
+}
+
+install_optional_cli() {
+  local cmd="$1" friendly="$2"
+  if command -v "$cmd" >/dev/null 2>&1; then
+    return
+  fi
+
+  if [[ "$CHECK_ONLY" == true || "$INSTALL_MISSING" != true ]]; then
+    return
+  fi
+
+  if command -v brew >/dev/null 2>&1; then
+    status_line "ACTION" "$friendly" "installing via Homebrew"
+    if brew install "$cmd" >/dev/null 2>&1 || brew install --cask "$cmd" >/dev/null 2>&1; then
+      status_line "OK" "$friendly" "installed via Homebrew"
+      return
+    else
+      status_line "FAIL" "$friendly" "Homebrew install failed; install manually"
+    fi
+  elif command -v apt-get >/dev/null 2>&1; then
+    status_line "ACTION" "$friendly" "installing via apt-get"
+    if sudo apt-get update -y >/dev/null 2>&1 && sudo apt-get install -y "$cmd" >/dev/null 2>&1; then
+      status_line "OK" "$friendly" "installed via apt-get"
+      return
+    else
+      status_line "FAIL" "$friendly" "apt-get install failed; install manually"
+    fi
+  else
+    status_line "WARN" "$friendly" "no supported package manager detected; install manually"
   fi
 }
 
@@ -180,6 +216,17 @@ if [[ "$CHECK_ONLY" == true ]]; then
 fi
 
 ensure_fira_code
+
+# Install optional CLIs if requested
+for opt in \
+  "claude|claude cli" \
+  "codex|codex cli" \
+  "gemini|gemini cli" \
+  "lms|lm studio cli"
+do
+  IFS='|' read -r cmd friendly <<< "$opt"
+  install_optional_cli "$cmd" "$friendly"
+done
 
 for entry in "${TARGETS[@]}"; do
   IFS='|' read -r rel dest <<< "$entry"

@@ -20,8 +20,9 @@ Personal dotfiles collected from the current machine. Files are now at repo root
    This reports missing tools/paths (oh-my-zsh, plugins, fonts, WezTerm background, etc.).
 4. Run the setup script from repo root:
    ```
-   ./setup.sh          # symlink mode (default)
-   ./setup.sh --copy   # copy files instead of linking
+   ./setup.sh                   # symlink mode (default)
+   ./setup.sh --copy            # copy files instead of linking
+   ./setup.sh --install-missing # also try installing optional CLIs if absent (claude, codex, gemini, lms)
    ```
    Existing files are backed up with a timestamped `.bak.*` suffix.
    If Fira Code is missing, the script auto-installs via Homebrew (macOS) or apt-get (Linux) when available.

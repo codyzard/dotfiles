@@ -4,15 +4,15 @@ Personal dotfiles collected from the current machine. Files are now at repo root
 
 ## Contents (flat layout)
 - `.zshrc`
-- `my_custom.zsh` (goes to `~/.oh-my-zsh/custom/my_custom.zsh`)
-- `aerospace.toml` (goes to `~/.config/aerospace/aerospace.toml`)
+- `my_custom.zsh` (links to `~/.oh-my-zsh/custom/my_custom.zsh`)
+- `aerospace.toml` (links to `~/.config/aerospace/aerospace.toml`)
 - `.wezterm.lua`
-- `.vscode/settings.json` (goes to `~/Library/Application Support/Code/User/settings.json`)
+- `.vscode/settings.json` (links to VS Code user settings: macOS `~/Library/Application Support/Code/User/settings.json`, Linux `~/.config/Code/User/settings.json`)
 
 ## Usage
 1. Back up any existing config files on the target machine.
 2. Clone this repo (e.g., `git clone https://... dotfiles`).
-3. (Optional) Run environment checks:
+3. (Optional) Run environment checks (macOS or Linux):
    ```
    ./setup.sh --check
    ```
@@ -23,6 +23,6 @@ Personal dotfiles collected from the current machine. Files are now at repo root
    ./setup.sh --copy   # copy files instead of linking
    ```
    Existing files are backed up with a timestamped `.bak.*` suffix.
-   If Fira Code font is missing and Homebrew is available, the script will attempt to install it automatically.
+   If Fira Code is missing, the script auto-installs via Homebrew (macOS) or apt-get (Linux) when available.
 
 Adjust paths as needed if your environment differs.

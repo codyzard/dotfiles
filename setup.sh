@@ -3,6 +3,13 @@ set -euo pipefail
 
 MODE="symlink"
 CHECK_ONLY=false
+UNAME_S=$(uname -s 2>/dev/null || echo "unknown")
+
+# VS Code settings destination depends on platform
+VSCODE_DEST="$HOME/Library/Application Support/Code/User/settings.json"
+if [[ "$UNAME_S" == "Linux" ]]; then
+  VSCODE_DEST="$HOME/.config/Code/User/settings.json"
+fi
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -92,7 +99,7 @@ run_checks() {
   check_path "$HOME/.config/aerospace" "AeroSpace config"
   check_path "$HOME/.wezterm.lua" "WezTerm config"
   check_path "$HOME/.zshrc" "zshrc"
-  check_path "$HOME/Library/Application Support/Code/User" "VS Code user dir"
+  check_path "$(dirname "$VSCODE_DEST")" "VS Code user dir"
   check_path "$bg_path" "WezTerm background (optional)"
 
   echo "== Commands =="
@@ -125,9 +132,22 @@ ensure_fira_code() {
     else
       status_line "FAIL" "Font Fira Code" "Homebrew install failed; install manually"
     fi
+    return
+  fi
+
+  if command -v apt-get >/dev/null 2>&1; then
+    status_line "ACTION" "Font Fira Code" "installing via apt-get (fonts-firacode)"
+    if sudo apt-get update -y >/dev/null 2>&1 && sudo apt-get install -y fonts-firacode >/dev/null 2>&1; then
+      status_line "OK" "Font Fira Code" "installed via apt-get"
+    else
+      status_line "FAIL" "Font Fira Code" "apt-get install failed; install manually"
+    fi
+    return
   else
     status_line "MISS" "Homebrew" "required to auto-install Fira Code"
   fi
+
+  status_line "WARN" "Font Fira Code" "install manually: https://fonts.google.com/specimen/Fira+Code"
 }
 
 link_or_copy() {
@@ -150,7 +170,7 @@ TARGETS=(
   "my_custom.zsh|$HOME/.oh-my-zsh/custom/my_custom.zsh"
   "aerospace.toml|$HOME/.config/aerospace/aerospace.toml"
   ".wezterm.lua|$HOME/.wezterm.lua"
-  ".vscode/settings.json|$HOME/Library/Application Support/Code/User/settings.json"
+  ".vscode/settings.json|$VSCODE_DEST"
 )
 
 if [[ "$CHECK_ONLY" == true ]]; then

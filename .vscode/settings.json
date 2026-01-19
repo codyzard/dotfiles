@@ -21,7 +21,7 @@
     "editor.defaultFormatter": "samverschueren.linter-xo"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "samverschueren.linter-xo"
   },
   "claudeCodeChat.thinking.intensity": "ultrathink",
   "console-ninja.featureSet": "Community",

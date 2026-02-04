@@ -77,5 +77,14 @@
     ]
   },
   "redoclyOpenAPI.user.anonymousId": "anon_01KBS6S4NFFY0MZYRQA6Z3S3D8",
-  "workbench.startupEditor": "none"
+  "workbench.startupEditor": "none",
+  "workbench.colorTheme": "Dracula Theme",
+  "editor.fontFamily": "JetBrains Mono, Recursive, Victor Mono, Fira Code, monospace",
+  "editor.fontLigatures": true,
+  "editor.fontVariations": true,
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      { "scope": ["comment"], "settings": { "fontStyle": "italic" } },
+    ],
+  },
 }

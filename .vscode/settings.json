@@ -1,27 +1,27 @@
 {
   "[css]": {
-    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+    "editor.defaultFormatter": "stylelint.vscode-stylelint",
   },
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[javascriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[lua]": {
-    "editor.defaultFormatter": "Koihik.vscode-lua-format"
+    "editor.defaultFormatter": "Koihik.vscode-lua-format",
   },
   "[typescript]": {
-    "editor.defaultFormatter": "samverschueren.linter-xo"
+    "editor.defaultFormatter": "samverschueren.linter-xo",
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "samverschueren.linter-xo"
+    "editor.defaultFormatter": "samverschueren.linter-xo",
   },
   "claudeCodeChat.thinking.intensity": "ultrathink",
   "console-ninja.featureSet": "Community",
@@ -30,7 +30,7 @@
   "editor.accessibilitySupport": "off",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
-    "source.fixAll.stylelint": "always"
+    "source.fixAll.stylelint": "always",
   },
   "editor.formatOnSave": true,
   "explorer.confirmDelete": false,
@@ -50,16 +50,16 @@
   "terminal.integrated.defaultProfile.linux": "zsh",
   "terminal.integrated.env.linux": {
     "terminal.integrated.shell.linux": "/bin/zsh",
-    "terminal.integrated.shell.osx": "/bin/zsh"
+    "terminal.integrated.shell.osx": "/bin/zsh",
   },
   "terminal.integrated.env.osx": {
     "FIG_NEW_SESSION": "1",
     "PATH": "/Users/tu.lehoang/.nvm/versions/node/v22.3.0/bin:$PATH",
-    "Q_NEW_SESSION": "1"
+    "Q_NEW_SESSION": "1",
   },
   "typescript.updateImportsOnFileMove.enabled": "always",
   "vscode_custom_css.imports": [
-    "file:///Users/tu.lehoang/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
+    "file:///Users/tu.lehoang/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js",
   ],
   "vsicons.dontShowNewVersionMessage": true,
   "workbench.colorCustomizations": {},
@@ -70,11 +70,11 @@
   "xo.format.enable": true,
   "yaml.schemas": {
     "/home/lehoangtu/.vscode/extensions/continue.continue-1.0.13-linux-x64/config-yaml-schema.json": [
-      ".continue/**/*.yaml"
+      ".continue/**/*.yaml",
     ],
     "/home/lehoangtu/.vscode/extensions/continue.continue-1.0.14-linux-x64/config-yaml-schema.json": [
-      ".continue/**/*.yaml"
-    ]
+      ".continue/**/*.yaml",
+    ],
   },
   "redoclyOpenAPI.user.anonymousId": "anon_01KBS6S4NFFY0MZYRQA6Z3S3D8",
   "workbench.startupEditor": "none",
@@ -87,4 +87,9 @@
       { "scope": ["comment"], "settings": { "fontStyle": "italic" } },
     ],
   },
+  "vscode-pets.throwBallWithMouse": true,
+  "vscode-pets.theme": "forest",
+  "vscode-pets.petSize": "small",
+  "vscode-pets.petColor": "akita",
+  "vscode-pets.petType": "crab",
 }

@@ -143,5 +143,26 @@ export PATH="$PATH:/Users/tu.lehoang/.lmstudio/bin"
 export PATH="/Users/tu.lehoang/.antigravity/antigravity/bin:$PATH"
 
 
+# OneLogin AWS helper using 1Password OTP
+# export ONELOGIN_OP_ITEM="OneLogin AWS"
+# export ONELOGIN_OP_VAULT="Your Vault Name"  # optional
+olaws() {
+  local profile="${1:-default}"
+
+  if [[ -z "${ONELOGIN_OP_ITEM:-}" ]]; then
+    print -u2 'ONELOGIN_OP_ITEM is not set. Example: export ONELOGIN_OP_ITEM="OneLogin AWS"'
+    return 1
+  fi
+
+  local otp
+  if [[ -n "${ONELOGIN_OP_VAULT:-}" ]]; then
+    otp="$(op item get "$ONELOGIN_OP_ITEM" --vault "$ONELOGIN_OP_VAULT" --otp)" || return 1
+  else
+    otp="$(op item get "$ONELOGIN_OP_ITEM" --otp)" || return 1
+  fi
+
+  onelogin-aws-assume-role --profile "$profile" --otp "$otp"
+}
+
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"

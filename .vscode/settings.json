@@ -55,7 +55,7 @@
   "terminal.integrated.env.osx": {
     "FIG_NEW_SESSION": "1",
     "PATH": "/Users/tu.lehoang/.nvm/versions/node/v22.3.0/bin:$PATH",
-    "Q_NEW_SESSION": "1",
+    "Q_NEW_SESSION": "1"
   },
   "typescript.updateImportsOnFileMove.enabled": "always",
   "vscode_custom_css.imports": [
@@ -93,4 +93,15 @@
   "vscode-pets.petColor": "akita",
   "vscode-pets.petType": "crab",
   "workbench.activityBar.location": "top",
+  "json.schemaDownload.trustedDomains": {
+    "https://schemastore.azurewebsites.net/": true,
+    "https://raw.githubusercontent.com/": true,
+    "https://www.schemastore.org/": true,
+    "https://json.schemastore.org/": true,
+    "https://json-schema.org/": true,
+    "https://biomejs.dev": true,
+  },
+  "chat.viewSessions.orientation": "stacked",
+  "workbench.browser.enableChatTools": true,
+  "biome.suggestInstallingGlobally": false,
 }

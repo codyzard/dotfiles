@@ -25,6 +25,7 @@ alias gst='git stash'
 alias gstp='git stash pop'
 alias gpo='git push origin '
 alias grs1='git reset --soft HEAD~1'
+alias gplr='gaa && gst && gck main && gpl && gstp' # stash & pull origin main & stash pop
 
 ### Docker
 alias d="docker"

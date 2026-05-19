@@ -14,12 +14,18 @@ config.window_background_opacity = 0.4
 -- config.window_background_image = wezterm.home_dir .."/Downloads/jayce-arcane-survivor-skin-lol-splash-art-2k-wallpaper-uhdpaper.com-433@3@b.jpg"
 config.macos_window_background_blur = 1000
 
-config.keys = {
-    -- Kích hoạt khi nhấn Option + Left
+config.keys = { -- Kích hoạt khi nhấn Option + Left
     {
         key = "LeftArrow",
         mods = "OPT",
-        action = wezterm.action {SendString = "\x1bb"}
+        action = wezterm.action {
+            SendString = "\x1bb",
+            {
+                key = "Enter",
+                mods = "SHIFT",
+                action = wezterm.action {SendString = "\x1b\r"}
+            }
+        }
     }, -- Kích hoạt khi nhấn Option + Right
     {
         key = "RightArrow",

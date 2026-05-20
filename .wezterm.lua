@@ -18,14 +18,12 @@ config.keys = { -- Kích hoạt khi nhấn Option + Left
     {
         key = "LeftArrow",
         mods = "OPT",
-        action = wezterm.action {
-            SendString = "\x1bb",
-            {
-                key = "Enter",
-                mods = "SHIFT",
-                action = wezterm.action {SendString = "\x1b\r"}
-            }
-        }
+        action = wezterm.action {SendString = "\x1bb"}
+    },
+    {
+        key = "Enter",
+        mods = "SHIFT",
+        action = wezterm.action {SendString = "\x1b\r"}
     }, -- Kích hoạt khi nhấn Option + Right
     {
         key = "RightArrow",

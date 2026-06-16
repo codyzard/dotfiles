@@ -18,10 +18,10 @@
     "editor.defaultFormatter": "Koihik.vscode-lua-format",
   },
   "[typescript]": {
-    "editor.defaultFormatter": "samverschueren.linter-xo",
+    "editor.defaultFormatter": "oxc.oxc-vscode",
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "samverschueren.linter-xo",
+    "editor.defaultFormatter": "oxc.oxc-vscode",
   },
   "claudeCodeChat.thinking.intensity": "ultrathink",
   "console-ninja.featureSet": "Community",
@@ -106,4 +106,5 @@
   "biome.suggestInstallingGlobally": false,
   "gitlens.ai.model": "vscode",
   "gitlens.ai.vscode.model": "copilot:gpt-4.1",
+  "git.openRepositoryInParentFolders": "always",
 }

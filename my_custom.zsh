@@ -45,3 +45,4 @@ alias oc=opencode
 ### ANY
 alias stan="vendor/bin/phpstan -vvv analyze -c .phpstan-use-baseline.neon --memory-limit=4G "
 alias pf="cd ./php_dev_tools && composer format && cd .."
+alias ol="cd ~/work/onelogin && onelogin-aws-assume-role --profile default"

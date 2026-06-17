@@ -45,4 +45,13 @@ alias oc=opencode
 ### ANY
 alias stan="vendor/bin/phpstan -vvv analyze -c .phpstan-use-baseline.neon --memory-limit=4G "
 alias pf="cd ./php_dev_tools && composer format && cd .."
-alias ol="cd ~/work/onelogin && onelogin-aws-assume-role --profile default"
+ol() {
+  local item="zw7ajg7cpadfb7don74pup2neu"  # 1Password "OneLogin" (password + OTP)
+  local pw otp
+  pw="$(op item get "$item" --fields label=password --reveal)" || return 1
+  otp="$(op item get "$item" --otp)" || return 1
+  cd ~/work/onelogin || return 1
+  # feed MFA device "1", then hand tty back for the role prompt
+  { echo 1; cat; } | onelogin-aws-assume-role --profile default \
+    --onelogin-password "$pw" --otp "$otp"
+}

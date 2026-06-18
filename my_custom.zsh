@@ -55,3 +55,8 @@ ol() {
   { echo 1; cat; } | onelogin-aws-assume-role --profile default \
     --onelogin-password "$pw" --otp "$otp"
 }
+
+## ssh
+alias stgdeploy="ssh aws-ssm-prtimes-staging-deploy-alma9"
+alias proddeploy="ssh aws-ssm-prtimes-production-deploy-alma9"
+alias stgweb="ssh aws-ssm-prtimes-staging-php81-web01"

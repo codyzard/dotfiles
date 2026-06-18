@@ -125,8 +125,6 @@ check_font() {
 }
 
 run_checks() {
-  local bg_path="$HOME/Downloads/jayce-arcane-survivor-skin-lol-splash-art-2k-wallpaper-uhdpaper.com-433@3@b.jpg"
-
   echo "== Paths =="
   check_path "$HOME/.oh-my-zsh" "oh-my-zsh"
   check_path "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" "zsh-syntax-highlighting (Homebrew path)"
@@ -136,7 +134,7 @@ run_checks() {
   check_path "$HOME/.wezterm.lua" "WezTerm config"
   check_path "$HOME/.zshrc" "zshrc"
   check_path "$(dirname "$VSCODE_DEST")" "VS Code user dir"
-  check_path "$bg_path" "WezTerm background (optional)"
+  check_path "$WALLPAPER_DEST" "WezTerm background (optional)"
 
   echo "== Commands =="
   for cmd in git zsh eza zoxide pnpm docker code wezterm; do
@@ -163,7 +161,7 @@ ensure_fira_code() {
 
   if command -v brew >/dev/null 2>&1; then
     status_line "ACTION" "Font Fira Code" "installing via Homebrew"
-    if brew tap homebrew/cask-fonts >/dev/null 2>&1 && brew install --cask font-fira-code >/dev/null 2>&1; then
+    if brew install --cask font-fira-code >/dev/null 2>&1; then
       status_line "OK" "Font Fira Code" "installed via Homebrew"
     else
       status_line "FAIL" "Font Fira Code" "Homebrew install failed; install manually"
@@ -189,6 +187,11 @@ ensure_fira_code() {
 link_or_copy() {
   local src="$1"
   local dest="$2"
+  # Idempotent: skip if already symlinked to src (avoids .bak clutter on re-runs)
+  if [[ "$MODE" == "symlink" && "$(readlink "$dest" 2>/dev/null)" == "$src" ]]; then
+    echo "Already linked: $dest"
+    return
+  fi
   mkdir -p "$(dirname "$dest")"
   backup_if_exists "$dest"
 
@@ -198,6 +201,28 @@ link_or_copy() {
   else
     ln -s "$src" "$dest"
     echo "Linked $src -> $dest"
+  fi
+}
+
+WALLPAPER_DEST="$HOME/.config/wallpapers/wezterm-bg.jpeg"
+WALLPAPER_URL="https://raw.githubusercontent.com/JaKooLit/Wallpaper-Bank/main/wallpapers/Anime%20-%20Landscape.jpeg"
+
+ensure_wallpaper() {
+  if [[ -e "$WALLPAPER_DEST" ]]; then
+    status_line "OK" "WezTerm wallpaper" "$WALLPAPER_DEST"
+    return
+  fi
+  if [[ "$CHECK_ONLY" == true ]]; then
+    status_line "MISS" "WezTerm wallpaper" "missing (run setup to download)"
+    return
+  fi
+  mkdir -p "$(dirname "$WALLPAPER_DEST")"
+  status_line "ACTION" "WezTerm wallpaper" "downloading"
+  if curl -fsSL "$WALLPAPER_URL" -o "$WALLPAPER_DEST"; then
+    status_line "OK" "WezTerm wallpaper" "$WALLPAPER_DEST"
+  else
+    rm -f "$WALLPAPER_DEST"
+    status_line "FAIL" "WezTerm wallpaper" "download failed; set manually in .wezterm.lua"
   fi
 }
 
@@ -216,6 +241,7 @@ if [[ "$CHECK_ONLY" == true ]]; then
 fi
 
 ensure_fira_code
+ensure_wallpaper
 
 # Install optional CLIs if requested
 for opt in \

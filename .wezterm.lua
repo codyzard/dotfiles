@@ -11,7 +11,19 @@ config.window_decorations = "RESIZE"
 config.color_scheme = 'Apple System Colors'
 
 config.window_background_opacity = 0.4
--- config.window_background_image = wezterm.home_dir .."/Downloads/jayce-arcane-survivor-skin-lol-splash-art-2k-wallpaper-uhdpaper.com-433@3@b.jpg"
+-- Downloaded by setup.sh (JaKooLit Wallpaper-Bank). Only set if present.
+local bg = wezterm.home_dir .. "/.config/wallpapers/wezterm-bg.jpeg"
+local f = io.open(bg, "r")
+if f then
+  f:close()
+  config.window_background_image = bg
+  -- Dim the wallpaper so terminal text stays readable
+  config.window_background_image_hsb = {
+    brightness = 0.04, -- lower = darker image, clearer text
+    saturation = 0.9,
+    hue = 1.0,
+  }
+end
 config.macos_window_background_blur = 1000
 
 config.keys = { -- Kích hoạt khi nhấn Option + Left

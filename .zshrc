@@ -125,17 +125,13 @@ export NVM_DIR="$HOME/.nvm"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[[ -r /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] \
+  && source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=180'
-
-bindkey '^[[A' history-search-backward 
+bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
 
 alias ls="eza --icons=always"
-
-eval "$(zoxide init zsh)"
-alias cd="z"
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/tu.lehoang/.lmstudio/bin"
@@ -145,31 +141,13 @@ export PATH="$PATH:/Users/tu.lehoang/.lmstudio/bin"
 export PATH="/Users/tu.lehoang/.antigravity/antigravity/bin:$PATH"
 
 
-# OneLogin AWS helper using 1Password OTP
-# export ONELOGIN_OP_ITEM="OneLogin AWS"
-# export ONELOGIN_OP_VAULT="Your Vault Name"  # optional
-olaws() {
-  local profile="${1:-default}"
-
-  if [[ -z "${ONELOGIN_OP_ITEM:-}" ]]; then
-    print -u2 'ONELOGIN_OP_ITEM is not set. Example: export ONELOGIN_OP_ITEM="OneLogin AWS"'
-    return 1
-  fi
-
-  local otp
-  if [[ -n "${ONELOGIN_OP_VAULT:-}" ]]; then
-    otp="$(op item get "$ONELOGIN_OP_ITEM" --vault "$ONELOGIN_OP_VAULT" --otp)" || return 1
-  else
-    otp="$(op item get "$ONELOGIN_OP_ITEM" --otp)" || return 1
-  fi
-
-  onelogin-aws-assume-role --profile "$profile" --otp "$otp"
-}
-
-
 # Added by Antigravity IDE
 export PATH="/Users/tu.lehoang/.antigravity-ide/antigravity-ide/bin:$PATH"
 
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
+
+# zoxide must init at the very end (after anything that may wrap `cd`)
+eval "$(zoxide init zsh)"
+alias cd="z"

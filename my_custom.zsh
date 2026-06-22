@@ -55,21 +55,25 @@ alias oc=opencode
 ### ANY
 alias stan="vendor/bin/phpstan -vvv analyze -c .phpstan-use-baseline.neon --memory-limit=4G "
 alias pf="cd ./php_dev_tools && composer format && cd .."
-# ol -> fetch password + OTP from 1Password, auto-pick MFA device 1,
-#       then pick the AWS role manually. cwd restored after login.
+# ol [role_number]
+#   ol      -> auto MFA device 1, choose AWS role manually
+#   ol 15   -> auto MFA device 1 and AWS role 15
 ol() {
   local item="zw7ajg7cpadfb7don74pup2neu"  # 1Password "OneLogin" (password + OTP)
+  local role="$1"
   local pw otp
   pw="$(op item get "$item" --fields label=password --reveal)" || return 1
   otp="$(op item get "$item" --otp)" || return 1
-  ( cd ~/work/onelogin || exit 1
-    PW="$pw" OTP="$otp" expect -c '
-      set timeout 60
-      spawn onelogin-aws-assume-role --profile default --onelogin-password $env(PW) --otp $env(OTP)
-      expect { "MFA Device" { send "1\r" } timeout {} }
-      interact
-    '
-  )
+  cd ~/work/onelogin || return 1
+  if [[ -n "$role" ]]; then
+    # device "1" + role number, then EOF -> exits cleanly
+    printf '1\n%s\n' "$role" | onelogin-aws-assume-role --profile default \
+      --onelogin-password "$pw" --otp "$otp"
+  else
+    # device "1" auto, keep tty open so you can type the role
+    { echo 1; cat; } | onelogin-aws-assume-role --profile default \
+      --onelogin-password "$pw" --otp "$otp"
+  fi
 }
 
 ## ssh

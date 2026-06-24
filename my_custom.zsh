@@ -76,6 +76,9 @@ ol() {
   fi
 }
 
+alias checkcmd="cat ~/.oh-my-zsh/custom/my_custom.zsh"
+
+
 ## ssh
 alias stgdeploy="ssh aws-ssm-prtimes-staging-deploy-alma9"
 alias proddeploy="ssh aws-ssm-prtimes-production-deploy-alma9"

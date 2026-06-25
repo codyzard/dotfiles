@@ -59,6 +59,7 @@ alias pf="cd ./php_dev_tools && composer format && cd .."
 #   ol      -> auto MFA device 1, choose AWS role manually
 #   ol 15   -> auto MFA device 1 and AWS role 15
 ol() {
+  local current_dir="$(pwd)"
   local item="zw7ajg7cpadfb7don74pup2neu"  # 1Password "OneLogin" (password + OTP)
   local role="$1"
   local pw otp
@@ -74,6 +75,8 @@ ol() {
     { echo 1; cat; } | onelogin-aws-assume-role --profile default \
       --onelogin-password "$pw" --otp "$otp"
   fi
+
+  cd "$current_dir" || return 1
 }
 
 alias checkcmd="cat ~/.oh-my-zsh/custom/my_custom.zsh"

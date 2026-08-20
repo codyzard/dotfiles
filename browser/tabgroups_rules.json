@@ -1,0 +1,297 @@
+{
+    "rule-les9n5tx": {
+        "enabled": true,
+        "groupColor": "blue",
+        "groupName": "Jira",
+        "id": "rule-les9n5tx",
+        "ruleName": "Jira",
+        "urlMatches": [
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "prtimes.atlassian.net"
+            }
+        ]
+    },
+    "rule-lof3wkyh": {
+        "enabled": true,
+        "groupColor": "green",
+        "groupName": "Dic",
+        "id": "rule-lof3wkyh",
+        "ruleName": "Dictionary",
+        "urlMatches": [
+            {
+                "method": "includes",
+                "target": "href",
+                "value": "ejje.weblio.jp/"
+            },
+            {
+                "method": "includes",
+                "target": "href",
+                "value": "takoboto.jp/"
+            },
+            {
+                "method": "includes",
+                "target": "href",
+                "value": "mazii.net/"
+            },
+            {
+                "method": "includes",
+                "target": "href",
+                "value": "https://translate.google.com.vn/"
+            },
+            {
+                "method": "includes",
+                "target": "href",
+                "value": "deepl.com"
+            },
+            {
+                "method": "includes",
+                "target": "href",
+                "value": "tracau.vn"
+            }
+        ]
+    },
+    "rule-lof4fyxp": {
+        "enabled": true,
+        "groupName": "Google",
+        "id": "rule-lof4fyxp",
+        "ruleName": "Google",
+        "urlMatches": [
+            {
+                "method": "regex",
+                "target": "hostname",
+                "value": "^(?!.*calendar\\.google\\.com)(?!.*translate\\.google\\.com).*google\\.com"
+            }
+        ]
+    },
+    "rule-lof4gr20": {
+        "enabled": true,
+        "groupName": "Dev",
+        "id": "rule-lof4gr20",
+        "ruleName": "Dev",
+        "urlMatches": [
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "prtimes.dev.local"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "localhost"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "prtimes-frontend.dev.local"
+            }
+        ]
+    },
+    "rule-lof4hmxo": {
+        "groupName": "Notion",
+        "id": "rule-lof4hmxo",
+        "ruleName": "Notion",
+        "urlMatches": [
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "notion.so"
+            }
+        ]
+    },
+    "rule-lof4m795": {
+        "groupName": "Fig",
+        "id": "rule-lof4m795",
+        "ruleName": "Figma",
+        "urlMatches": [
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "figma.com"
+            }
+        ]
+    },
+    "rule-lof4o936": {
+        "enabled": true,
+        "groupName": "AI",
+        "id": "rule-lof4o936",
+        "ruleName": "AI",
+        "urlMatches": [
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "chat.openai.com"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "chatgpt.com"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "aistudio.google.com"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "app.devin.ai"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "claude.ai"
+            }
+        ]
+    },
+    "rule-lof4p4bp": {
+        "enabled": true,
+        "groupName": "Git",
+        "id": "rule-lof4p4bp",
+        "ruleName": "Github",
+        "urlMatches": [
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "github.com"
+            }
+        ]
+    },
+    "rule-lof4qr4a": {
+        "enabled": true,
+        "groupName": "Blog",
+        "id": "rule-lof4qr4a",
+        "ruleName": "Blog",
+        "urlMatches": [
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "medium.com"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "qiita.com"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "zenn.dev"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "viblo.asia"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "speakerdeck.com"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "patterns.dev"
+            }
+        ]
+    },
+    "rule-lof50kff": {
+        "enabled": true,
+        "groupName": "Cloud",
+        "id": "rule-lof50kff",
+        "ruleName": "Clound",
+        "urlMatches": [
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "aws.amazon.com"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "manage.fastly.com"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "console.cloud.google.com/"
+            }
+        ]
+    },
+    "rule-lof52341": {
+        "groupName": "Youtube",
+        "id": "rule-lof52341",
+        "ruleName": "Youtube",
+        "urlMatches": [
+            {
+                "method": "includes",
+                "target": "href",
+                "value": "https://www.youtube.com/"
+            }
+        ]
+    },
+    "rule-m0onke03": {
+        "enabled": true,
+        "groupName": "stg",
+        "id": "rule-m0onke03",
+        "ruleName": "Staging",
+        "urlMatches": [
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "prtimes.basemachina.com"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "stg-prtimes.net"
+            }
+        ]
+    },
+    "rule-m2cqlz6v": {
+        "enabled": false,
+        "groupName": "SNS",
+        "id": "rule-m2cqlz6v",
+        "ruleName": "SNS",
+        "urlMatches": [
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "facebook.com"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "x.com"
+            }
+        ]
+    },
+    "rule-mo18mt5y": {
+        "enabled": true,
+        "groupName": "prtimes",
+        "id": "rule-mo18mt5y",
+        "ruleName": "prtimes",
+        "urlMatches": [
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "prtimes.jp"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "prtimes.co.jp"
+            },
+            {
+                "method": "includes",
+                "target": "hostname",
+                "value": "prtimes.com"
+            }
+        ]
+    },
+    "meta": {
+        "name": "tab-groups-rules",
+        "version": 1
+    }
+}

@@ -2,37 +2,49 @@
   "[css]": {
     "editor.defaultFormatter": "stylelint.vscode-stylelint",
   },
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-  },
-  "[javascriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-  },
-  "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-  },
   "[lua]": {
     "editor.defaultFormatter": "Koihik.vscode-lua-format",
   },
+  "[javascript]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true,
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true,
+  },
+  "[json]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true,
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true,
+  },
   "[typescript]": {
     "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true,
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true,
   },
+
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": false,
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxc": "always",
+    "source.fixAll.stylelint": "always",
+  },
+
+  "oxc.enable.oxfmt": true,
+  "oxc.enable.oxlint": true,
   "claudeCodeChat.thinking.intensity": "ultrathink",
   "console-ninja.featureSet": "Community",
   "docker.extension.dockerEngineAvailabilityPrompt": false,
   "docker.extension.enableComposeLanguageServer": false,
   "editor.accessibilitySupport": "off",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.fixAll.stylelint": "always",
-  },
-  "editor.formatOnSave": true,
   "explorer.confirmDelete": false,
   "extensions.ignoreRecommendations": true,
   "files.insertFinalNewline": true,
@@ -55,7 +67,7 @@
   "terminal.integrated.env.osx": {
     "FIG_NEW_SESSION": "1",
     "PATH": "/Users/tu.lehoang/.nvm/versions/node/v22.3.0/bin:$PATH",
-    "Q_NEW_SESSION": "1"
+    "Q_NEW_SESSION": "1",
   },
   "typescript.updateImportsOnFileMove.enabled": "always",
   "vscode_custom_css.imports": [
@@ -83,9 +95,7 @@
   "editor.fontLigatures": true,
   "editor.fontVariations": true,
   "editor.tokenColorCustomizations": {
-    "textMateRules": [
-      { "scope": ["comment"], "settings": { "fontStyle": "italic" } },
-    ],
+    "textMateRules": [{ "scope": ["comment"], "settings": { "fontStyle": "italic" } }],
   },
   "vscode-pets.throwBallWithMouse": true,
   "vscode-pets.theme": "winter",

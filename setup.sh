@@ -67,6 +67,8 @@ check_cmd() {
   local cmd="$1" label="${2:-$1}"
   if command -v "$cmd" >/dev/null 2>&1; then
     status_line "OK" "$label" "$(command -v "$cmd")"
+  elif [[ -d "/Applications/Ghostty.app" && "$cmd" == "ghostty" ]]; then
+    status_line "OK" "$label" "/Applications/Ghostty.app"
   else
     status_line "MISS" "$label" "not found"
   fi
@@ -74,7 +76,7 @@ check_cmd() {
 
 install_optional_cli() {
   local cmd="$1" friendly="$2"
-  if command -v "$cmd" >/dev/null 2>&1; then
+  if command -v "$cmd" >/dev/null 2>&1 || [[ -d "/Applications/Ghostty.app" && "$cmd" == "ghostty" ]]; then
     return
   fi
 
@@ -131,13 +133,15 @@ run_checks() {
   check_path "$HOME/.p10k.zsh" "powerlevel10k config (optional)"
   check_path "$HOME/.nvm" "nvm directory"
   check_path "$HOME/.config/aerospace" "AeroSpace config"
+  check_path "$HOME/.config/ghostty/config" "Ghostty config"
+  check_path "$HOME/.config/tabgroups_rules.json" "Tab Groups rules (optional)"
   check_path "$HOME/.wezterm.lua" "WezTerm config"
   check_path "$HOME/.zshrc" "zshrc"
   check_path "$(dirname "$VSCODE_DEST")" "VS Code user dir"
   check_path "$WALLPAPER_DEST" "WezTerm background (optional)"
 
   echo "== Commands =="
-  for cmd in git zsh eza zoxide pnpm docker code wezterm; do
+  for cmd in git zsh eza zoxide pnpm docker code wezterm ghostty; do
     check_cmd "$cmd"
   done
   check_cmd "aerospace" "aerospace (wm cli)"
@@ -227,11 +231,13 @@ ensure_wallpaper() {
 }
 
 TARGETS=(
-  ".gitconfig|$HOME/.gitconfig"
-  ".zshrc|$HOME/.zshrc"
-  "my_custom.zsh|$HOME/.oh-my-zsh/custom/my_custom.zsh"
-  "aerospace.toml|$HOME/.config/aerospace/aerospace.toml"
-  ".wezterm.lua|$HOME/.wezterm.lua"
+  "git/.gitconfig|$HOME/.gitconfig"
+  "zsh/.zshrc|$HOME/.zshrc"
+  "zsh/my_custom.zsh|$HOME/.oh-my-zsh/custom/my_custom.zsh"
+  "aerospace/aerospace.toml|$HOME/.config/aerospace/aerospace.toml"
+  "ghostty/config|$HOME/.config/ghostty/config"
+  "browser/tabgroups_rules.json|$HOME/.config/tabgroups_rules.json"
+  "wezterm/.wezterm.lua|$HOME/.wezterm.lua"
   ".vscode/settings.json|$VSCODE_DEST"
 )
 
@@ -245,6 +251,7 @@ ensure_wallpaper
 
 # Install optional CLIs if requested
 for opt in \
+  "ghostty|ghostty terminal" \
   "claude|claude cli" \
   "codex|codex cli" \
   "gemini|gemini cli" \

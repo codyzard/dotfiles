@@ -138,7 +138,8 @@ alt-p = 'workspace P'
 alt-q = 'workspace Q'
 alt-r = 'workspace R'
 alt-s = 'workspace S'
-alt-t = 'workspace T'
+# alt-t = 'workspace T'
+alt-t = 'exec-and-forget open -a Ghostty'
 alt-u = 'workspace U'
 alt-v = 'workspace V'
 alt-w = 'workspace W'
@@ -210,6 +211,10 @@ alt-shift-l = ['join-with right', 'mode main']
 down = 'volume down'
 up = 'volume up'
 shift-down = ['volume set 0', 'mode main']
+
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
+run = 'move-node-to-workspace T'
 
 [[on-window-detected]]
 # if.app-id = 'com.github.wez.wezterm'

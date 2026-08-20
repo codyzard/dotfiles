@@ -1,0 +1,24 @@
+# Ghostty Terminal Configuration
+# Symlinked to ~/.config/ghostty/config by setup.sh
+
+# Font Configuration
+font-family = Fira Code
+font-size = 20
+
+# Theme
+theme = Apple System Colors
+
+# Window & Transparency
+background-opacity = 0.85
+background-blur = true
+window-padding-x = 12
+window-padding-y = 12
+macos-titlebar-style = transparent
+
+# Terminal UX & Behavior
+confirm-close-surface = false
+mouse-hide-while-typing = true
+
+# Keybindings & macOS Integration
+# Allows Option key to act as Alt for word navigation (Option+Left / Option+Right)
+macos-option-as-alt = true

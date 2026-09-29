@@ -4,6 +4,8 @@
 
 
 
+
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -145,9 +147,11 @@ export PATH="/Users/tu.lehoang/.antigravity/antigravity/bin:$PATH"
 export PATH="/Users/tu.lehoang/.antigravity-ide/antigravity-ide/bin:$PATH"
 
 
-# Kiro CLI post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
 
 # zoxide must init at the very end (after anything that may wrap `cd`)
 eval "$(zoxide init zsh)"
 alias cd="z"
+
+
+# Kiro CLI post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"

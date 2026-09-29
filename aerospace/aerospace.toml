@@ -135,14 +135,17 @@ alt-m = 'workspace M'
 alt-n = 'workspace N'
 alt-o = 'workspace O'
 alt-p = 'workspace P'
-alt-q = 'workspace Q'
+# alt-q = 'workspace Q'
+alt-q = 'exec-and-forget open -a "Antigravity IDE"'
 alt-r = 'workspace R'
-alt-s = 'workspace S'
+# alt-s = 'workspace S'
+alt-s = 'exec-and-forget open -a Slack'
 # alt-t = 'workspace T'
 alt-t = 'exec-and-forget open -a Ghostty'
 alt-u = 'workspace U'
 alt-v = 'workspace V'
-alt-w = 'workspace W'
+# alt-w = 'workspace W'
+alt-w = 'exec-and-forget open -a Dia'
 alt-x = 'workspace X'
 alt-y = 'workspace Y'
 alt-z = 'workspace Z'
@@ -231,6 +234,10 @@ run = 'move-node-to-workspace C'
 
 [[on-window-detected]]
 if.app-id = 'com.google.antigravity'
+run = 'move-node-to-workspace Q'
+
+[[on-window-detected]]
+if.app-id = 'com.google.antigravity-ide'
 run = 'move-node-to-workspace Q'
 
 [[on-window-detected]]

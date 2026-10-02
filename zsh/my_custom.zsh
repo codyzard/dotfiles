@@ -50,7 +50,7 @@ alias cx=codex
 alias cg=gemini
 alias kr=kiro-cli
 alias oc=opencode
-
+alias h=herdr #running agent
 
 ### ANY
 alias stan="vendor/bin/phpstan -vvv analyze -c .phpstan-use-baseline.neon --memory-limit=4G "

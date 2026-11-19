@@ -320,10 +320,13 @@ ensure_gnome_audio() {
     fi
   fi
 
-  # 3. Max out K66 hardware ALSA PCM mixer if K66 USB Audio is connected
+  # 3. Max out K66 hardware ALSA PCM mixer & boost PipeWire software volume to 140%
   if command -v amixer >/dev/null 2>&1 && [[ -d /proc/asound/K66 ]]; then
     amixer -c K66 sset PCM 100% unmute >/dev/null 2>&1 || true
     status_line "OK" "K66 ALSA hardware PCM" "100% (0.00dB)"
+    if command -v wpctl >/dev/null 2>&1; then
+      wpctl set-volume @DEFAULT_AUDIO_SINK@ 1.4 >/dev/null 2>&1 || true
+    fi
   fi
 }
 

@@ -13,7 +13,7 @@ Personal dotfiles supporting both **macOS** and **Linux** (Fedora `dnf` and Debi
 | `wezterm/` | `wezterm/.wezterm.lua`, `wezterm/setup.sh` | `~/.wezterm.lua` | macOS, Linux |
 | `aerospace/` | `aerospace/aerospace.toml`, `aerospace/setup.sh` | `~/.config/aerospace/aerospace.toml` | macOS only |
 | `browser/` | `browser/tabgroups_rules.json`, `browser/auto_tab_groups_rules.json`, `browser/convert_tabgroups.py`, `browser/firefox/user.js`, `browser/setup.sh` | `~/.config/tabgroups_rules.json`, `~/.config/auto_tab_groups_rules.json`, Firefox profiles | macOS, Linux |
-| `gnome/` | `gnome/ghostshot-extension.js`, `gnome/setup.sh` | GNOME Wayland (Vicinae, GhostShot, power shortcuts) | Linux only |
+| `gnome/` | `gnome/ghostshot-extension.js`, `gnome/monitors.xml`, `gnome/setup.sh` | GNOME Wayland (Vicinae, GhostShot, power shortcuts, `~/.config/monitors.xml` + GDM `/etc/xdg/monitors.xml`) | Linux only |
 | `.vscode/` | `.vscode/settings.json`, `.vscode/setup.sh` | macOS: `~/Library/Application Support/Code/User/settings.json`<br>Linux: `~/.config/Code/User/settings.json` | macOS, Linux |
 | `lib/` | `lib/common.sh` | Shared helpers (`pkg_install`, `link_or_copy`, `check_*`, etc.) | macOS, Linux |
 
@@ -55,5 +55,7 @@ Automatically handles on Linux (skipped on macOS):
    - Binds **`Super + Shift + S`** (and `Print`) to GNOME's native screenshot UI — drag freely across any monitor and release to capture & copy straight to clipboard.
 3. **Power Shortcuts**:
    - `Ctrl + Alt + Q` → Suspend, `Ctrl + Alt + L` → Log out.
+4. **Display Layout & GDM Login Screen (`monitors.xml`)**:
+   - Syncs `gnome/monitors.xml` with `~/.config/monitors.xml` (automatically capturing newer layouts saved by GNOME Settings) and installs it to `/etc/xdg/monitors.xml` so the GDM login screen uses the external monitor layout.
 
 > After first-time GNOME extension installation on Wayland, **log out and log back in**, then run `systemctl --user restart vicinae.service`.

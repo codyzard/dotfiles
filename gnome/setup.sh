@@ -6,6 +6,7 @@ set -euo pipefail
 # - Vicinae launcher + systemd service + Alt+Space shortcut + GNOME extension (ID 8594)
 # - GhostShot instant area screenshot GNOME extension (ID 9786) + GNOME 51/Mutter patch + Super+Shift+S
 # - GNOME power shortcuts (Ctrl+Alt+Q suspend, Ctrl+Alt+L log out)
+# - GNOME & GDM display layout (~/.config/monitors.xml -> /etc/xdg/monitors.xml)
 
 check_gnome_ext_pattern() {
   local pattern="$1"
@@ -330,20 +331,58 @@ ensure_gnome_audio() {
   fi
 }
 
+ensure_gdm_monitors() {
+  local repo_monitors="$ROOT/gnome/monitors.xml"
+  local user_monitors="$HOME/.config/monitors.xml"
+  local gdm_monitors="/etc/xdg/monitors.xml"
+
+  # If GNOME Settings overwrote ~/.config/monitors.xml with a newer regular file,
+  # pull the updated layout back into the repo before linking/copying.
+  if [[ -f "$user_monitors" && ! -L "$user_monitors" ]]; then
+    if [[ ! -e "$repo_monitors" || "$user_monitors" -nt "$repo_monitors" ]] \
+       && ! cmp -s "$user_monitors" "$repo_monitors" 2>/dev/null; then
+      cp "$user_monitors" "$repo_monitors"
+      status_line "OK" "GNOME monitors.xml" "captured latest layout into $repo_monitors"
+    fi
+  fi
+
+  if [[ -r "$repo_monitors" ]]; then
+    link_or_copy "$repo_monitors" "$user_monitors"
+  fi
+
+  if [[ ! -r "$user_monitors" ]]; then
+    status_line "SKIP" "GDM monitors.xml" "no $user_monitors found"
+    return
+  fi
+
+  if [[ -r "$gdm_monitors" ]] && cmp -s "$user_monitors" "$gdm_monitors" 2>/dev/null; then
+    status_line "OK" "GDM monitors.xml" "$gdm_monitors (synced)"
+    return
+  fi
+
+  status_line "ACTION" "GDM monitors.xml" "syncing $user_monitors -> $gdm_monitors"
+  if run_sudo install -m 644 "$user_monitors" "$gdm_monitors"; then
+    status_line "OK" "GDM monitors.xml" "$gdm_monitors"
+  else
+    status_line "WARN" "GDM monitors.xml" "could not write $gdm_monitors; run: sudo install -m 644 ~/.config/monitors.xml /etc/xdg/monitors.xml"
+  fi
+}
+
 setup_module() {
   if [[ "$OS" != "linux" ]]; then
-    status_line "SKIP" "GNOME desktop (Vicinae, GhostShot, power shortcuts, audio)" "linux only"
+    status_line "SKIP" "GNOME desktop (Vicinae, GhostShot, power shortcuts, audio, monitors)" "linux only"
     return
   fi
   ensure_vicinae
   ensure_instant_screenshot
   ensure_gnome_power_shortcuts
   ensure_gnome_audio
+  ensure_gdm_monitors
 }
 
 check_module() {
   if [[ "$OS" != "linux" ]]; then
-    status_line "SKIP" "GNOME desktop (Vicinae, GhostShot)" "linux only"
+    status_line "SKIP" "GNOME desktop (Vicinae, GhostShot, monitors)" "linux only"
     return
   fi
   check_cmd "wl-copy" "wl-clipboard"
@@ -364,6 +403,16 @@ check_module() {
     status_line "OK" "GhostShot GNOME extension" "installed"
   else
     status_line "WARN" "GhostShot GNOME extension" "missing (https://extensions.gnome.org/extension/9786/instant-area-screenshot/)"
+  fi
+  check_path "$HOME/.config/monitors.xml" "GNOME monitors.xml"
+  if [[ -r "/etc/xdg/monitors.xml" ]]; then
+    if [[ -r "$HOME/.config/monitors.xml" ]] && ! cmp -s "$HOME/.config/monitors.xml" "/etc/xdg/monitors.xml" 2>/dev/null; then
+      status_line "WARN" "GDM monitors.xml" "/etc/xdg/monitors.xml out of sync with ~/.config/monitors.xml (run ./gnome/setup.sh)"
+    else
+      status_line "OK" "GDM monitors.xml" "/etc/xdg/monitors.xml"
+    fi
+  else
+    status_line "WARN" "GDM monitors.xml" "/etc/xdg/monitors.xml missing (run ./gnome/setup.sh)"
   fi
 }
 

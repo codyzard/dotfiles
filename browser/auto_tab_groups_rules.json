@@ -1,0 +1,198 @@
+{
+  "version": "1.0",
+  "exportDate": "2026-11-19T06:46:02.853663Z",
+  "rules": {
+    "rule-les9n5tx": {
+      "id": "rule-les9n5tx",
+      "name": "Jira",
+      "domains": [
+        "prtimes.atlassian.net"
+      ],
+      "color": "blue",
+      "enabled": true,
+      "priority": 2,
+      "isBlacklist": false,
+      "createdAt": "2026-11-19T06:46:02.853663Z"
+    },
+    "rule-lof3wkyh": {
+      "id": "rule-lof3wkyh",
+      "name": "Dic",
+      "domains": [
+        "ejje.weblio.jp",
+        "takoboto.jp",
+        "mazii.net",
+        "translate.google.com.vn",
+        "deepl.com",
+        "tracau.vn"
+      ],
+      "color": "green",
+      "enabled": true,
+      "priority": 2,
+      "isBlacklist": false,
+      "createdAt": "2026-11-19T06:46:02.853663Z"
+    },
+    "rule-lof4fyxp": {
+      "id": "rule-lof4fyxp",
+      "name": "Google",
+      "domains": [
+        "/^(?!.*calendar\\.google\\.com)(?!.*translate\\.google\\.com).*google\\.com/"
+      ],
+      "color": "yellow",
+      "enabled": true,
+      "priority": 1,
+      "isBlacklist": false,
+      "createdAt": "2026-11-19T06:46:02.853663Z"
+    },
+    "rule-lof4gr20": {
+      "id": "rule-lof4gr20",
+      "name": "Dev",
+      "domains": [
+        "prtimes.dev.local",
+        "localhost",
+        "localhost:*",
+        "prtimes-frontend.dev.local"
+      ],
+      "color": "cyan",
+      "enabled": true,
+      "priority": 2,
+      "isBlacklist": false,
+      "createdAt": "2026-11-19T06:46:02.853663Z"
+    },
+    "rule-lof4hmxo": {
+      "id": "rule-lof4hmxo",
+      "name": "Notion",
+      "domains": [
+        "notion.so"
+      ],
+      "color": "grey",
+      "enabled": true,
+      "priority": 2,
+      "isBlacklist": false,
+      "createdAt": "2026-11-19T06:46:02.853663Z"
+    },
+    "rule-lof4m795": {
+      "id": "rule-lof4m795",
+      "name": "Fig",
+      "domains": [
+        "figma.com"
+      ],
+      "color": "pink",
+      "enabled": true,
+      "priority": 2,
+      "isBlacklist": false,
+      "createdAt": "2026-11-19T06:46:02.853663Z"
+    },
+    "rule-lof4o936": {
+      "id": "rule-lof4o936",
+      "name": "AI",
+      "domains": [
+        "chat.openai.com",
+        "chatgpt.com",
+        "aistudio.google.com",
+        "app.devin.ai",
+        "claude.ai"
+      ],
+      "color": "purple",
+      "enabled": true,
+      "priority": 2,
+      "isBlacklist": false,
+      "createdAt": "2026-11-19T06:46:02.853663Z"
+    },
+    "rule-lof4p4bp": {
+      "id": "rule-lof4p4bp",
+      "name": "Git",
+      "domains": [
+        "github.com"
+      ],
+      "color": "orange",
+      "enabled": true,
+      "priority": 2,
+      "isBlacklist": false,
+      "createdAt": "2026-11-19T06:46:02.853663Z"
+    },
+    "rule-lof4qr4a": {
+      "id": "rule-lof4qr4a",
+      "name": "Blog",
+      "domains": [
+        "medium.com",
+        "qiita.com",
+        "zenn.dev",
+        "viblo.asia",
+        "speakerdeck.com",
+        "patterns.dev"
+      ],
+      "color": "cyan",
+      "enabled": true,
+      "priority": 2,
+      "isBlacklist": false,
+      "createdAt": "2026-11-19T06:46:02.853663Z"
+    },
+    "rule-lof50kff": {
+      "id": "rule-lof50kff",
+      "name": "Cloud",
+      "domains": [
+        "aws.amazon.com",
+        "manage.fastly.com",
+        "console.cloud.google.com"
+      ],
+      "color": "orange",
+      "enabled": true,
+      "priority": 2,
+      "isBlacklist": false,
+      "createdAt": "2026-11-19T06:46:02.853663Z"
+    },
+    "rule-lof52341": {
+      "id": "rule-lof52341",
+      "name": "Youtube",
+      "domains": [
+        "www.youtube.com"
+      ],
+      "color": "red",
+      "enabled": true,
+      "priority": 2,
+      "isBlacklist": false,
+      "createdAt": "2026-11-19T06:46:02.853663Z"
+    },
+    "rule-m0onke03": {
+      "id": "rule-m0onke03",
+      "name": "stg",
+      "domains": [
+        "prtimes.basemachina.com",
+        "stg-prtimes.net"
+      ],
+      "color": "yellow",
+      "enabled": true,
+      "priority": 2,
+      "isBlacklist": false,
+      "createdAt": "2026-11-19T06:46:02.853663Z"
+    },
+    "rule-m2cqlz6v": {
+      "id": "rule-m2cqlz6v",
+      "name": "SNS",
+      "domains": [
+        "facebook.com",
+        "x.com"
+      ],
+      "color": "pink",
+      "enabled": false,
+      "priority": 2,
+      "isBlacklist": false,
+      "createdAt": "2026-11-19T06:46:02.853663Z"
+    },
+    "rule-mo18mt5y": {
+      "id": "rule-mo18mt5y",
+      "name": "prtimes",
+      "domains": [
+        "prtimes.jp",
+        "prtimes.co.jp",
+        "prtimes.com"
+      ],
+      "color": "blue",
+      "enabled": true,
+      "priority": 2,
+      "isBlacklist": false,
+      "createdAt": "2026-11-19T06:46:02.853663Z"
+    }
+  },
+  "totalRules": 14
+}

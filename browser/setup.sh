@@ -72,11 +72,18 @@ ensure_firefox_user_js() {
 
 setup_module() {
   link_or_copy "$ROOT/browser/tabgroups_rules.json" "$HOME/.config/tabgroups_rules.json"
+  if command -v python3 >/dev/null 2>&1 && [[ -r "$ROOT/browser/convert_tabgroups.py" ]]; then
+    python3 "$ROOT/browser/convert_tabgroups.py" "$ROOT/browser/tabgroups_rules.json" "$ROOT/browser/auto_tab_groups_rules.json" >/dev/null
+  fi
+  if [[ -r "$ROOT/browser/auto_tab_groups_rules.json" ]]; then
+    link_or_copy "$ROOT/browser/auto_tab_groups_rules.json" "$HOME/.config/auto_tab_groups_rules.json"
+  fi
   ensure_firefox_user_js
 }
 
 check_module() {
-  check_path "$HOME/.config/tabgroups_rules.json" "Tab Groups rules (optional)"
+  check_path "$HOME/.config/tabgroups_rules.json" "Tab Groups rules (Chrome)"
+  check_path "$HOME/.config/auto_tab_groups_rules.json" "Auto Tab Groups rules (Firefox)"
   local ff_profile ff_found=false
   while IFS= read -r ff_profile; do
     [[ -n "$ff_profile" ]] || continue

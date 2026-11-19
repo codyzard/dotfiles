@@ -12,7 +12,7 @@ Personal dotfiles supporting both **macOS** and **Linux** (Fedora `dnf` and Debi
 | `herdr/` | `herdr/config.toml`, `herdr/setup.sh` | `~/.config/herdr/config.toml` | macOS, Linux |
 | `wezterm/` | `wezterm/.wezterm.lua`, `wezterm/setup.sh` | `~/.wezterm.lua` | macOS, Linux |
 | `aerospace/` | `aerospace/aerospace.toml`, `aerospace/setup.sh` | `~/.config/aerospace/aerospace.toml` | macOS only |
-| `browser/` | `browser/tabgroups_rules.json`, `browser/firefox/user.js`, `browser/setup.sh` | `~/.config/tabgroups_rules.json`, Firefox profiles | macOS, Linux |
+| `browser/` | `browser/tabgroups_rules.json`, `browser/auto_tab_groups_rules.json`, `browser/convert_tabgroups.py`, `browser/firefox/user.js`, `browser/setup.sh` | `~/.config/tabgroups_rules.json`, `~/.config/auto_tab_groups_rules.json`, Firefox profiles | macOS, Linux |
 | `gnome/` | `gnome/ghostshot-extension.js`, `gnome/setup.sh` | GNOME Wayland (Vicinae, GhostShot, power shortcuts) | Linux only |
 | `.vscode/` | `.vscode/settings.json`, `.vscode/setup.sh` | macOS: `~/Library/Application Support/Code/User/settings.json`<br>Linux: `~/.config/Code/User/settings.json` | macOS, Linux |
 | `lib/` | `lib/common.sh` | Shared helpers (`pkg_install`, `link_or_copy`, `check_*`, etc.) | macOS, Linux |

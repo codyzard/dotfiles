@@ -292,14 +292,50 @@ ensure_gnome_power_shortcuts() {
   status_line "OK" "GNOME logout shortcut" "Ctrl+Alt+L -> log out"
 }
 
+ensure_gnome_audio() {
+  # 1. Enable GNOME Over-Amplification (allows volume up to 150%)
+  if command -v gsettings >/dev/null 2>&1 \
+     && gsettings list-schemas 2>/dev/null | grep -qx "org.gnome.desktop.sound"; then
+    local cur_overamp
+    cur_overamp="$(gsettings get org.gnome.desktop.sound allow-volume-above-100-percent 2>/dev/null || true)"
+    if [[ "$cur_overamp" != "true" ]]; then
+      gsettings set org.gnome.desktop.sound allow-volume-above-100-percent true 2>/dev/null || true
+    fi
+    status_line "OK" "GNOME over-amplification" "enabled (up to 150%)"
+  fi
+
+  # 2. Install WirePlumber rule to ignore K66's inaccurate hardware dB curve
+  local wp_src="$ROOT/gnome/50-k66-ignore-db.conf"
+  local wp_dest="$HOME/.config/wireplumber/wireplumber.conf.d/50-k66-ignore-db.conf"
+  if [[ -r "$wp_src" ]]; then
+    local changed=false
+    if [[ "$(readlink "$wp_dest" 2>/dev/null || true)" != "$wp_src" ]] && ! cmp -s "$wp_src" "$wp_dest" 2>/dev/null; then
+      changed=true
+    fi
+    link_or_copy "$wp_src" "$wp_dest"
+    if [[ "$changed" == true ]] && command -v systemctl >/dev/null 2>&1; then
+      systemctl --user restart wireplumber pipewire pipewire-pulse >/dev/null 2>&1 || true
+      sleep 1
+      status_line "OK" "WirePlumber K66 ignore-dB" "restarted PipeWire/WirePlumber"
+    fi
+  fi
+
+  # 3. Max out K66 hardware ALSA PCM mixer if K66 USB Audio is connected
+  if command -v amixer >/dev/null 2>&1 && [[ -d /proc/asound/K66 ]]; then
+    amixer -c K66 sset PCM 100% unmute >/dev/null 2>&1 || true
+    status_line "OK" "K66 ALSA hardware PCM" "100% (0.00dB)"
+  fi
+}
+
 setup_module() {
   if [[ "$OS" != "linux" ]]; then
-    status_line "SKIP" "GNOME desktop (Vicinae, GhostShot, power shortcuts)" "linux only"
+    status_line "SKIP" "GNOME desktop (Vicinae, GhostShot, power shortcuts, audio)" "linux only"
     return
   fi
   ensure_vicinae
   ensure_instant_screenshot
   ensure_gnome_power_shortcuts
+  ensure_gnome_audio
 }
 
 check_module() {

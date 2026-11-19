@@ -37,6 +37,15 @@ def convert_match(match: dict) -> list[str]:
         return []
 
     if method == "regex":
+        # Special-case negative lookahead on *.google.com into Auto Tab Groups'
+        # fast O(1) hostname wildcard + !exclusion syntax (avoids regex backtracking on long URLs)
+        if "google\\.com" in val and "calendar\\.google\\.com" in val:
+            return [
+                "*.google.com",
+                "google.com",
+                "!calendar.google.com",
+                "!translate.google.com",
+            ]
         # Auto Tab Groups expects regex wrapped in /.../
         if not (val.startswith("/") and val.endswith("/")):
             val = f"/{val}/"

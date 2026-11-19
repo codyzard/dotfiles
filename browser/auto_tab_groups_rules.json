@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "exportDate": "2026-11-19T06:46:02.853663Z",
+  "exportDate": "2026-11-19T08:42:33.877146Z",
   "rules": {
     "rule-les9n5tx": {
       "id": "rule-les9n5tx",
@@ -12,7 +12,7 @@
       "enabled": true,
       "priority": 2,
       "isBlacklist": false,
-      "createdAt": "2026-11-19T06:46:02.853663Z"
+      "createdAt": "2026-11-19T08:42:33.877146Z"
     },
     "rule-lof3wkyh": {
       "id": "rule-lof3wkyh",
@@ -29,19 +29,22 @@
       "enabled": true,
       "priority": 2,
       "isBlacklist": false,
-      "createdAt": "2026-11-19T06:46:02.853663Z"
+      "createdAt": "2026-11-19T08:42:33.877146Z"
     },
     "rule-lof4fyxp": {
       "id": "rule-lof4fyxp",
       "name": "Google",
       "domains": [
-        "/^(?!.*calendar\\.google\\.com)(?!.*translate\\.google\\.com).*google\\.com/"
+        "*.google.com",
+        "google.com",
+        "!calendar.google.com",
+        "!translate.google.com"
       ],
       "color": "yellow",
       "enabled": true,
       "priority": 1,
       "isBlacklist": false,
-      "createdAt": "2026-11-19T06:46:02.853663Z"
+      "createdAt": "2026-11-19T08:42:33.877146Z"
     },
     "rule-lof4gr20": {
       "id": "rule-lof4gr20",
@@ -56,7 +59,7 @@
       "enabled": true,
       "priority": 2,
       "isBlacklist": false,
-      "createdAt": "2026-11-19T06:46:02.853663Z"
+      "createdAt": "2026-11-19T08:42:33.877146Z"
     },
     "rule-lof4hmxo": {
       "id": "rule-lof4hmxo",
@@ -68,7 +71,7 @@
       "enabled": true,
       "priority": 2,
       "isBlacklist": false,
-      "createdAt": "2026-11-19T06:46:02.853663Z"
+      "createdAt": "2026-11-19T08:42:33.877146Z"
     },
     "rule-lof4m795": {
       "id": "rule-lof4m795",
@@ -80,7 +83,7 @@
       "enabled": true,
       "priority": 2,
       "isBlacklist": false,
-      "createdAt": "2026-11-19T06:46:02.853663Z"
+      "createdAt": "2026-11-19T08:42:33.877146Z"
     },
     "rule-lof4o936": {
       "id": "rule-lof4o936",
@@ -96,7 +99,7 @@
       "enabled": true,
       "priority": 2,
       "isBlacklist": false,
-      "createdAt": "2026-11-19T06:46:02.853663Z"
+      "createdAt": "2026-11-19T08:42:33.877146Z"
     },
     "rule-lof4p4bp": {
       "id": "rule-lof4p4bp",
@@ -108,7 +111,7 @@
       "enabled": true,
       "priority": 2,
       "isBlacklist": false,
-      "createdAt": "2026-11-19T06:46:02.853663Z"
+      "createdAt": "2026-11-19T08:42:33.877146Z"
     },
     "rule-lof4qr4a": {
       "id": "rule-lof4qr4a",
@@ -125,7 +128,7 @@
       "enabled": true,
       "priority": 2,
       "isBlacklist": false,
-      "createdAt": "2026-11-19T06:46:02.853663Z"
+      "createdAt": "2026-11-19T08:42:33.877146Z"
     },
     "rule-lof50kff": {
       "id": "rule-lof50kff",
@@ -139,7 +142,7 @@
       "enabled": true,
       "priority": 2,
       "isBlacklist": false,
-      "createdAt": "2026-11-19T06:46:02.853663Z"
+      "createdAt": "2026-11-19T08:42:33.877146Z"
     },
     "rule-lof52341": {
       "id": "rule-lof52341",
@@ -151,7 +154,7 @@
       "enabled": true,
       "priority": 2,
       "isBlacklist": false,
-      "createdAt": "2026-11-19T06:46:02.853663Z"
+      "createdAt": "2026-11-19T08:42:33.877146Z"
     },
     "rule-m0onke03": {
       "id": "rule-m0onke03",
@@ -164,7 +167,7 @@
       "enabled": true,
       "priority": 2,
       "isBlacklist": false,
-      "createdAt": "2026-11-19T06:46:02.853663Z"
+      "createdAt": "2026-11-19T08:42:33.877146Z"
     },
     "rule-m2cqlz6v": {
       "id": "rule-m2cqlz6v",
@@ -177,7 +180,7 @@
       "enabled": false,
       "priority": 2,
       "isBlacklist": false,
-      "createdAt": "2026-11-19T06:46:02.853663Z"
+      "createdAt": "2026-11-19T08:42:33.877146Z"
     },
     "rule-mo18mt5y": {
       "id": "rule-mo18mt5y",
@@ -191,7 +194,7 @@
       "enabled": true,
       "priority": 2,
       "isBlacklist": false,
-      "createdAt": "2026-11-19T06:46:02.853663Z"
+      "createdAt": "2026-11-19T08:42:33.877146Z"
     }
   },
   "totalRules": 14

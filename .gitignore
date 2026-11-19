@@ -1,3 +1,5 @@
 *.bak.*
 .DS_Store
 .gitconfig-work
+zsh/work.zsh
+*.local.*

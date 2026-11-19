@@ -13,12 +13,11 @@ background-opacity = 0.85
 background-blur = true
 window-padding-x = 12
 window-padding-y = 12
-macos-titlebar-style = transparent
-
 # Terminal UX & Behavior
 confirm-close-surface = false
 mouse-hide-while-typing = true
 
-# Keybindings & macOS Integration
+# macOS Integration (safely ignored by Ghostty on Linux)
+macos-titlebar-style = transparent
 # Allows Option key to act as Alt for word navigation (Option+Left / Option+Right)
 macos-option-as-alt = true

@@ -200,7 +200,7 @@
         "enabled": true,
         "groupName": "Cloud",
         "id": "rule-lof50kff",
-        "ruleName": "Clound",
+        "ruleName": "Cloud",
         "urlMatches": [
             {
                 "method": "includes",
@@ -215,7 +215,7 @@
             {
                 "method": "includes",
                 "target": "hostname",
-                "value": "console.cloud.google.com/"
+                "value": "console.cloud.google.com"
             }
         ]
     },

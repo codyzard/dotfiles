@@ -1,16 +1,44 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-MODE="symlink"
-CHECK_ONLY=false
-INSTALL_MISSING=false
-UNAME_S=$(uname -s 2>/dev/null || echo "unknown")
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib/common.sh
+source "$ROOT/lib/common.sh"
 
-# VS Code settings destination depends on platform
-VSCODE_DEST="$HOME/Library/Application Support/Code/User/settings.json"
-if [[ "$UNAME_S" == "Linux" ]]; then
-  VSCODE_DEST="$HOME/.config/Code/User/settings.json"
-fi
+# Ordered list of colocated app modules (each provides <module>/setup.sh)
+MODULES=(
+  git
+  zsh
+  ghostty
+  herdr
+  wezterm
+  aerospace
+  browser
+  gnome
+  .vscode
+)
+
+SELECTED_MODULES=()
+
+usage() {
+  cat <<'EOF'
+Usage: ./setup.sh [options]
+
+Orchestrates colocated <app>/setup.sh modules across macOS and Linux.
+
+Options:
+  --copy             Copy files instead of creating symlinks
+  --check            Run environment checks without modifying anything
+  --install-missing  Attempt installing optional CLIs when absent
+  --only <module>    Run only the specified module (repeatable, e.g. --only zsh --only gnome)
+  --list             List available modules and exit
+  --help             Show this help message
+
+You can also run any module directly, e.g.:
+  ./gnome/setup.sh
+  ./zsh/setup.sh --check
+EOF
+}
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -23,252 +51,95 @@ while [[ $# -gt 0 ]]; do
     --install-missing)
       INSTALL_MISSING=true
       ;;
+    --only)
+      if [[ $# -lt 2 ]]; then
+        echo "--only requires a module name" >&2
+        exit 1
+      fi
+      SELECTED_MODULES+=("$2")
+      shift
+      ;;
+    --list)
+      printf '%s\n' "${MODULES[@]}"
+      exit 0
+      ;;
     --help)
-      cat <<'EOF'
-Usage: ./setup.sh [--copy] [--check] [--install-missing]
-
-By default, creates symlinks from this repo to $HOME.
-Use --copy to copy files instead of symlinking.
-Use --check to run recommended environment checks without linking/copying.
-Use --install-missing to attempt installing optional CLIs when absent.
-Existing files are backed up with a timestamped .bak suffix.
-EOF
+      usage
       exit 0
       ;;
     *)
       echo "Unknown option: $1" >&2
+      usage >&2
       exit 1
       ;;
   esac
   shift
 done
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ ${#SELECTED_MODULES[@]} -eq 0 ]]; then
+  ACTIVE_MODULES=("${MODULES[@]}")
+  FULL_RUN=true
+else
+  ACTIVE_MODULES=("${SELECTED_MODULES[@]}")
+  FULL_RUN=false
+fi
 
-backup_if_exists() {
-  local target="$1"
-  if [[ -e "$target" || -L "$target" ]]; then
-    local backup="${target}.bak.$(date +%s)"
-    mv "$target" "$backup"
-    echo "Backed up $target -> $backup"
+run_module() {
+  local mod="$1" action="$2"
+  local script="$ROOT/$mod/setup.sh"
+  if [[ ! -r "$script" ]]; then
+    echo "Unknown module '$mod' (missing $script)" >&2
+    exit 1
   fi
-}
 
-status_line() {
-  local state="$1" label="$2" detail="${3:-}"
-  if [[ -n "$detail" ]]; then
-    printf "[%s] %s - %s\n" "$state" "$label" "$detail"
+  echo "== [$mod] =="
+  unset -f setup_module check_module 2>/dev/null || true
+  # shellcheck disable=SC1090
+  source "$script"
+  if [[ "$action" == "check" ]]; then
+    check_module
   else
-    printf "[%s] %s\n" "$state" "$label"
+    setup_module
   fi
 }
 
-check_cmd() {
-  local cmd="$1" label="${2:-$1}"
-  if command -v "$cmd" >/dev/null 2>&1; then
-    status_line "OK" "$label" "$(command -v "$cmd")"
-  elif [[ -d "/Applications/Ghostty.app" && "$cmd" == "ghostty" ]]; then
-    status_line "OK" "$label" "/Applications/Ghostty.app"
-  else
-    status_line "MISS" "$label" "not found"
-  fi
-}
-
-install_optional_cli() {
-  local cmd="$1" friendly="$2"
-  if command -v "$cmd" >/dev/null 2>&1 || [[ -d "/Applications/Ghostty.app" && "$cmd" == "ghostty" ]]; then
-    return
-  fi
-
-  if [[ "$CHECK_ONLY" == true || "$INSTALL_MISSING" != true ]]; then
-    return
-  fi
-
-  if command -v brew >/dev/null 2>&1; then
-    status_line "ACTION" "$friendly" "installing via Homebrew"
-    if brew install "$cmd" >/dev/null 2>&1 || brew install --cask "$cmd" >/dev/null 2>&1; then
-      status_line "OK" "$friendly" "installed via Homebrew"
-      return
-    else
-      status_line "FAIL" "$friendly" "Homebrew install failed; install manually"
-    fi
-  elif command -v apt-get >/dev/null 2>&1; then
-    status_line "ACTION" "$friendly" "installing via apt-get"
-    if sudo apt-get update -y >/dev/null 2>&1 && sudo apt-get install -y "$cmd" >/dev/null 2>&1; then
-      status_line "OK" "$friendly" "installed via apt-get"
-      return
-    else
-      status_line "FAIL" "$friendly" "apt-get install failed; install manually"
-    fi
-  else
-    status_line "WARN" "$friendly" "no supported package manager detected; install manually"
-  fi
-}
-
-check_path() {
-  local path="$1" label="${2:-$1}"
-  if [[ -e "$path" ]]; then
-    status_line "OK" "$label" "$path"
-  else
-    status_line "MISS" "$label" "missing"
-  fi
-}
-
-check_font() {
-  local font_name="$1"
-  for dir in "$HOME/Library/Fonts" "/Library/Fonts"; do
-    if compgen -G "$dir/${font_name}*" > /dev/null 2>&1; then
-      status_line "OK" "Font $font_name" "$dir"
-      return 0
-    fi
-  done
-  status_line "WARN" "Font $font_name" "not found (install recommended)"
-  return 1
-}
-
-run_checks() {
-  echo "== Paths =="
-  check_path "$HOME/.oh-my-zsh" "oh-my-zsh"
-  check_path "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" "zsh-syntax-highlighting (Homebrew path)"
-  check_path "$HOME/.p10k.zsh" "powerlevel10k config (optional)"
-  check_path "$HOME/.nvm" "nvm directory"
-  check_path "$HOME/.config/aerospace" "AeroSpace config"
-  check_path "$HOME/.config/ghostty/config" "Ghostty config"
-  check_path "$HOME/.config/tabgroups_rules.json" "Tab Groups rules (optional)"
-  check_path "$HOME/.wezterm.lua" "WezTerm config"
-  check_path "$HOME/.zshrc" "zshrc"
-  check_path "$(dirname "$VSCODE_DEST")" "VS Code user dir"
-  check_path "$WALLPAPER_DEST" "WezTerm background (optional)"
-
-  echo "== Commands =="
-  for cmd in git zsh eza zoxide pnpm docker code wezterm ghostty; do
-    check_cmd "$cmd"
-  done
-  check_cmd "aerospace" "aerospace (wm cli)"
+check_shared() {
+  echo "== [shared] =="
   check_cmd "claude" "claude cli (optional)"
   check_cmd "codex" "codex cli (optional)"
   check_cmd "gemini" "gemini cli (optional)"
   check_cmd "lms" "lm studio cli (optional)"
-
-  echo "== Fonts =="
-  check_font "Fira Code"
+  check_font "Fira Code" || true
 }
 
-ensure_fira_code() {
-  if check_font "Fira Code"; then
-    return
-  fi
-
-  if [[ "$CHECK_ONLY" == true ]]; then
-    return
-  fi
-
-  if command -v brew >/dev/null 2>&1; then
-    status_line "ACTION" "Font Fira Code" "installing via Homebrew"
-    if brew install --cask font-fira-code >/dev/null 2>&1; then
-      status_line "OK" "Font Fira Code" "installed via Homebrew"
-    else
-      status_line "FAIL" "Font Fira Code" "Homebrew install failed; install manually"
-    fi
-    return
-  fi
-
-  if command -v apt-get >/dev/null 2>&1; then
-    status_line "ACTION" "Font Fira Code" "installing via apt-get (fonts-firacode)"
-    if sudo apt-get update -y >/dev/null 2>&1 && sudo apt-get install -y fonts-firacode >/dev/null 2>&1; then
-      status_line "OK" "Font Fira Code" "installed via apt-get"
-    else
-      status_line "FAIL" "Font Fira Code" "apt-get install failed; install manually"
-    fi
-    return
-  else
-    status_line "MISS" "Homebrew" "required to auto-install Fira Code"
-  fi
-
-  status_line "WARN" "Font Fira Code" "install manually: https://fonts.google.com/specimen/Fira+Code"
+setup_shared() {
+  echo "== [shared] =="
+  ensure_fira_code
+  for opt in \
+    "claude|claude cli|--cask claude-code|npm install -g @anthropic-ai/claude-code" \
+    "codex|codex cli|--cask codex|npm install -g @openai/codex" \
+    "gemini|gemini cli|gemini-cli|npm install -g @google/gemini-cli" \
+    "lms|lm studio cli|manual|https://lmstudio.ai/docs/cli"
+  do
+    IFS='|' read -r cmd friendly brew_arg linux_hint <<< "$opt"
+    install_optional_cli "$cmd" "$friendly" "$brew_arg" "$linux_hint"
+  done
 }
 
-link_or_copy() {
-  local src="$1"
-  local dest="$2"
-  # Idempotent: skip if already symlinked to src (avoids .bak clutter on re-runs)
-  if [[ "$MODE" == "symlink" && "$(readlink "$dest" 2>/dev/null)" == "$src" ]]; then
-    echo "Already linked: $dest"
-    return
-  fi
-  mkdir -p "$(dirname "$dest")"
-  backup_if_exists "$dest"
-
-  if [[ "$MODE" == "copy" ]]; then
-    cp -R "$src" "$dest"
-    echo "Copied $src -> $dest"
-  else
-    ln -s "$src" "$dest"
-    echo "Linked $src -> $dest"
-  fi
-}
-
-WALLPAPER_DEST="$HOME/.config/wallpapers/wezterm-bg.jpeg"
-WALLPAPER_URL="https://raw.githubusercontent.com/JaKooLit/Wallpaper-Bank/main/wallpapers/Anime%20-%20Landscape.jpeg"
-
-ensure_wallpaper() {
-  if [[ -e "$WALLPAPER_DEST" ]]; then
-    status_line "OK" "WezTerm wallpaper" "$WALLPAPER_DEST"
-    return
-  fi
-  if [[ "$CHECK_ONLY" == true ]]; then
-    status_line "MISS" "WezTerm wallpaper" "missing (run setup to download)"
-    return
-  fi
-  mkdir -p "$(dirname "$WALLPAPER_DEST")"
-  status_line "ACTION" "WezTerm wallpaper" "downloading"
-  if curl -fsSL "$WALLPAPER_URL" -o "$WALLPAPER_DEST"; then
-    status_line "OK" "WezTerm wallpaper" "$WALLPAPER_DEST"
-  else
-    rm -f "$WALLPAPER_DEST"
-    status_line "FAIL" "WezTerm wallpaper" "download failed; set manually in .wezterm.lua"
-  fi
-}
-
-TARGETS=(
-  "git/.gitconfig|$HOME/.gitconfig"
-  "zsh/.zshrc|$HOME/.zshrc"
-  "zsh/my_custom.zsh|$HOME/.oh-my-zsh/custom/my_custom.zsh"
-  "aerospace/aerospace.toml|$HOME/.config/aerospace/aerospace.toml"
-  "ghostty/config|$HOME/.config/ghostty/config"
-  "browser/tabgroups_rules.json|$HOME/.config/tabgroups_rules.json"
-  "wezterm/.wezterm.lua|$HOME/.wezterm.lua"
-  ".vscode/settings.json|$VSCODE_DEST"
-)
+echo "== System: $OS ($UNAME_S) =="
 
 if [[ "$CHECK_ONLY" == true ]]; then
-  run_checks
+  for mod in "${ACTIVE_MODULES[@]}"; do
+    run_module "$mod" "check"
+  done
+  [[ "$FULL_RUN" == true ]] && check_shared
   exit 0
 fi
 
-ensure_fira_code
-ensure_wallpaper
+[[ "$FULL_RUN" == true ]] && setup_shared
 
-# Install optional CLIs if requested
-for opt in \
-  "ghostty|ghostty terminal" \
-  "claude|claude cli" \
-  "codex|codex cli" \
-  "gemini|gemini cli" \
-  "lms|lm studio cli"
-do
-  IFS='|' read -r cmd friendly <<< "$opt"
-  install_optional_cli "$cmd" "$friendly"
+for mod in "${ACTIVE_MODULES[@]}"; do
+  run_module "$mod" "setup"
 done
 
-for entry in "${TARGETS[@]}"; do
-  IFS='|' read -r rel dest <<< "$entry"
-  src="$ROOT/$rel"
-  if [[ ! -e "$src" && ! -L "$src" ]]; then
-    echo "Skipping missing $src" >&2
-    continue
-  fi
-  link_or_copy "$src" "$dest"
-done
-
-echo "Setup complete using mode: $MODE"
+echo "Setup complete ($OS) using mode: $MODE"

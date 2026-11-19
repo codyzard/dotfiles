@@ -60,19 +60,11 @@
   "redhat.telemetry.enabled": false,
   "security.workspace.trust.untrustedFiles": "open",
   "terminal.integrated.defaultProfile.linux": "zsh",
-  "terminal.integrated.env.linux": {
-    "terminal.integrated.shell.linux": "/bin/zsh",
-    "terminal.integrated.shell.osx": "/bin/zsh",
-  },
   "terminal.integrated.env.osx": {
     "FIG_NEW_SESSION": "1",
-    "PATH": "/Users/tu.lehoang/.nvm/versions/node/v22.3.0/bin:$PATH",
-    "Q_NEW_SESSION": "1"
+    "Q_NEW_SESSION": "1",
   },
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "vscode_custom_css.imports": [
-    "file:///Users/tu.lehoang/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js",
-  ],
   "vsicons.dontShowNewVersionMessage": true,
   "workbench.colorCustomizations": {},
   "workbench.editor.editorActionsLocation": "hidden",
@@ -80,15 +72,6 @@
   "workbench.editor.wrapTabs": false,
   "workbench.iconTheme": "vscode-icons",
   "xo.format.enable": true,
-  "yaml.schemas": {
-    "/home/lehoangtu/.vscode/extensions/continue.continue-1.0.13-linux-x64/config-yaml-schema.json": [
-      ".continue/**/*.yaml",
-    ],
-    "/home/lehoangtu/.vscode/extensions/continue.continue-1.0.14-linux-x64/config-yaml-schema.json": [
-      ".continue/**/*.yaml",
-    ],
-  },
-  "redoclyOpenAPI.user.anonymousId": "anon_01KBS6S4NFFY0MZYRQA6Z3S3D8",
   "workbench.startupEditor": "none",
   "workbench.colorTheme": "Dracula Theme",
   "editor.fontFamily": "JetBrains Mono, Recursive, Victor Mono, Fira Code, monospace",

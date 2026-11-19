@@ -1,0 +1,32 @@
+# Copy this file to zsh/work.zsh (gitignored) and run ./setup.sh
+# Oh My Zsh automatically loads ~/.oh-my-zsh/custom/work.zsh.
+
+### Project helpers
+# alias stan="vendor/bin/phpstan -vvv analyze -c .phpstan-use-baseline.neon --memory-limit=4G "
+# alias pf="cd ./php_dev_tools && composer format && cd .."
+
+### OneLogin + 1Password
+# ol [role_number]
+#   ol      -> auto MFA device 1, choose AWS role manually
+#   ol 15   -> auto MFA device 1 and AWS role 15
+# ol() {
+#   local item="${ONELOGIN_1PASSWORD_ITEM:-<your-1password-item-id>}"
+#   local role="$1"
+#   local pw otp
+#   pw="$(op item get "$item" --fields label=password --reveal)" || return 1
+#   otp="$(op item get "$item" --otp)" || return 1
+#   (
+#     cd ~/work/onelogin || exit 1
+#     if [[ -n "$role" ]]; then
+#       printf '1\n%s\n' "$role" | onelogin-aws-assume-role --profile default \
+#         --onelogin-password "$pw" --otp "$otp"
+#     else
+#       { echo 1; cat; } | onelogin-aws-assume-role --profile default \
+#         --onelogin-password "$pw" --otp "$otp"
+#     fi
+#   )
+# }
+
+### SSH
+# alias stgdeploy="ssh <staging-deploy-host>"
+# alias proddeploy="ssh <production-deploy-host>"

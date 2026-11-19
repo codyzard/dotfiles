@@ -87,7 +87,26 @@ ZSH_THEME="robbyrussell"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
-source $ZSH/oh-my-zsh.sh
+# Load extra completion definitions (zsh-completions) before Oh My Zsh runs compinit
+for _zsh_comp in \
+  "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-completions/src" \
+  /opt/homebrew/share/zsh-completions \
+  /usr/local/share/zsh-completions
+do
+  [[ -d "$_zsh_comp" ]] && fpath=("$_zsh_comp" $fpath)
+done
+unset _zsh_comp
+
+[[ -r "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
+
+# Interactive menu & case-insensitive Tab completion
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+# Herdr CLI completion (if installed)
+if command -v herdr >/dev/null 2>&1; then
+  eval "$(herdr completion zsh 2>/dev/null)" || true
+fi
 
 # User configuration
 
@@ -115,42 +134,75 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# Created by `pipx` on 2024-06-14 10:16:34
-export PATH="$PATH:/Users/tu.lehoang/.local/bin"
+# Helper to safely add directories to PATH without duplicates
+_add_to_path() {
+  local dir="$1" pos="${2:-append}"
+  [[ -d "$dir" ]] || return 0
+  case ":$PATH:" in
+    *":$dir:"*) return 0 ;;
+  esac
+  if [[ "$pos" == "prepend" ]]; then
+    export PATH="$dir:$PATH"
+  else
+    export PATH="$PATH:$dir"
+  fi
+}
 
+_add_to_path "$HOME/.antigravity-ide/antigravity-ide/bin" prepend
+_add_to_path "$HOME/.antigravity/antigravity/bin" prepend
+_add_to_path "$HOME/.local/bin" append
+_add_to_path "$HOME/.lmstudio/bin" append
+unset -f _add_to_path
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-[[ -r /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] \
-  && source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
 
-alias ls="eza --icons=always"
+if command -v eza >/dev/null 2>&1; then
+  alias ls="eza --icons=always"
+fi
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/tu.lehoang/.lmstudio/bin"
+# zoxide must init after anything that may wrap `cd`
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+  alias cd="z"
+fi
 
+# Load zsh-autosuggestions (inline history autocomplete: press -> to accept)
+for _zsh_as in \
+  /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh \
+  /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh \
+  /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh \
+  /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh \
+  "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+do
+  if [[ -r "$_zsh_as" ]]; then
+    source "$_zsh_as"
+    break
+  fi
+done
+unset _zsh_as
 
-# Added by Antigravity
-export PATH="/Users/tu.lehoang/.antigravity/antigravity/bin:$PATH"
-
-
-# Added by Antigravity IDE
-export PATH="/Users/tu.lehoang/.antigravity-ide/antigravity-ide/bin:$PATH"
-
-
-
-# zoxide must init at the very end (after anything that may wrap `cd`)
-eval "$(zoxide init zsh)"
-alias cd="z"
+# Load zsh-syntax-highlighting at the end (must come after bindkey & autosuggestions)
+for _zsh_hl in \
+  /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
+  /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
+  /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
+  /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
+  "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+do
+  if [[ -r "$_zsh_hl" ]]; then
+    source "$_zsh_hl"
+    break
+  fi
+done
+unset _zsh_hl
 
 
 

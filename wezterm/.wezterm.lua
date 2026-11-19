@@ -3,6 +3,7 @@ local wezterm = require 'wezterm'
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
+local is_macos = wezterm.target_triple:find("darwin") ~= nil
 
 config.font = wezterm.font("Fira Code")
 config.font_size = 20
@@ -24,33 +25,47 @@ if f then
     hue = 1.0,
   }
 end
-config.macos_window_background_blur = 1000
 
-config.keys = { -- Kích hoạt khi nhấn Option + Left
-    {
-        key = "LeftArrow",
-        mods = "OPT",
-        action = wezterm.action {SendString = "\x1bb"}
-    },
-    {
-        key = "Enter",
-        mods = "SHIFT",
-        action = wezterm.action {SendString = "\x1b\r"}
-    }, -- Kích hoạt khi nhấn Option + Right
-    {
-        key = "RightArrow",
-        mods = "OPT",
-        action = wezterm.action {SendString = "\x1bf"}
-    }, {
-        key = "LeftArrow",
-        mods = "CMD",
-        action = wezterm.action {SendString = "\x01"} -- Ctrl-A để di chuyển đến đầu dòng trong nhiều shell
-    }, -- Kích hoạt khi nhấn CMD + Right
-    {
-        key = "RightArrow",
-        mods = "CMD",
-        action = wezterm.action {SendString = "\x05"} -- Ctrl-E để di chuyển đến cuối dòng trong nhiều shell
-    }
+if is_macos then
+  config.macos_window_background_blur = 1000
+end
+
+local keys = {
+  -- Option/Alt + Left: move backward one word
+  {
+    key = "LeftArrow",
+    mods = "ALT",
+    action = wezterm.action { SendString = "\x1bb" },
+  },
+  -- Shift + Enter: insert newline in CLI apps
+  {
+    key = "Enter",
+    mods = "SHIFT",
+    action = wezterm.action { SendString = "\x1b\r" },
+  },
+  -- Option/Alt + Right: move forward one word
+  {
+    key = "RightArrow",
+    mods = "ALT",
+    action = wezterm.action { SendString = "\x1bf" },
+  },
 }
+
+if is_macos then
+  -- CMD + Left: move to beginning of line (Ctrl-A)
+  table.insert(keys, {
+    key = "LeftArrow",
+    mods = "CMD",
+    action = wezterm.action { SendString = "\x01" },
+  })
+  -- CMD + Right: move to end of line (Ctrl-E)
+  table.insert(keys, {
+    key = "RightArrow",
+    mods = "CMD",
+    action = wezterm.action { SendString = "\x05" },
+  })
+end
+
+config.keys = keys
 
 return config

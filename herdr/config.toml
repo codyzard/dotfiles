@@ -1,0 +1,7 @@
+# Herdr Terminal Multiplexer & Desktop App Configuration
+# Symlinked to ~/.config/herdr/config.toml by setup.sh
+
+[terminal]
+# Explicitly use zsh on both macOS and Linux (/bin/zsh exists on both)
+default_shell = "/bin/zsh"
+shell_mode = "auto"

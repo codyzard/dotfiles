@@ -3,7 +3,7 @@ alias p="pnpm "
 alias pi="pnpm install"
 alias pd="pnpm dev"
 alias pb="pnpm build"
-alias ps="pnpm start"
+alias pst="pnpm start" # Avoid shadowing system /bin/ps
 alias pt="pnpm test"
 alias ptu="pnpm test -- -u"
 alias ptuw="pnpm test:watch -- -u"
@@ -50,43 +50,15 @@ alias cx=codex
 alias cg=gemini
 alias kr=kiro-cli
 alias oc=opencode
-alias h=herdr #running agent
+alias h=herdr # running agent
 
-### ANY
-alias stan="vendor/bin/phpstan -vvv analyze -c .phpstan-use-baseline.neon --memory-limit=4G "
-alias pf="cd ./php_dev_tools && composer format && cd .."
-# ol [role_number]
-#   ol      -> auto MFA device 1, choose AWS role manually
-#   ol 15   -> auto MFA device 1 and AWS role 15
-ol() {
-  local current_dir="$(pwd)"
-  local item="zw7ajg7cpadfb7don74pup2neu"  # 1Password "OneLogin" (password + OTP)
-  local role="$1"
-  local pw otp
-  pw="$(op item get "$item" --fields label=password --reveal)" || return 1
-  otp="$(op item get "$item" --otp)" || return 1
-  cd ~/work/onelogin || return 1
-  if [[ -n "$role" ]]; then
-    # device "1" + role number, then EOF -> exits cleanly
-    printf '1\n%s\n' "$role" | onelogin-aws-assume-role --profile default \
-      --onelogin-password "$pw" --otp "$otp"
-  else
-    # device "1" auto, keep tty open so you can type the role
-    { echo 1; cat; } | onelogin-aws-assume-role --profile default \
-      --onelogin-password "$pw" --otp "$otp"
+### Helpers
+checkcmd() {
+  local custom_dir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+  cat "$custom_dir/my_custom.zsh"
+  if [[ -r "$custom_dir/work.zsh" ]]; then
+    echo ""
+    echo "### Work (local: $custom_dir/work.zsh)"
+    cat "$custom_dir/work.zsh"
   fi
-
-  cd "$current_dir" || return 1
 }
-
-alias checkcmd="cat ~/.oh-my-zsh/custom/my_custom.zsh"
-
-
-## ssh
-alias stgdeploy="ssh aws-ssm-prtimes-staging-deploy-alma9"
-alias proddeploy="ssh aws-ssm-prtimes-production-deploy-alma9"
-alias stgweb="ssh aws-ssm-prtimes-staging-php81-web01"
-alias prodbatch="ssh aws-ssm-prtimes-production-php74-batch01"
-alias prodweb01="ssh aws-ssm-prtimes-production-php74-web01"
-alias prodweb02="ssh aws-ssm-prtimes-production-php74-web02"
-alias prodweb03="ssh aws-ssm-prtimes-production-php74-web03"
